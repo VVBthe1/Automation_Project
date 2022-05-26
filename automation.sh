@@ -2,7 +2,7 @@
 set -e
 
 #S3 bucket name
-S3_BUCKET='upgrad-vivekbharos'
+s3_bucket='upgrad-vivekbharos'
 
 # Updating package details
 echo "Updating package cache"
@@ -37,3 +37,17 @@ else
     echo "Service disabled. Enabling apache2 service"
     sudo systemctl enable apache2.service
 fi
+
+# compressing log files
+timestamp=$(date '+%d%m%Y-%H%M%S')
+tar_name="Vivek-httpd-logs-$timestamp.tar.gz"
+
+echo "Creating log backup"
+sudo tar -czvf "/tmp/$tar_name" /var/log/apache2/*.log
+
+# install aws cli
+echo "Installing awscli"
+sudo apt install -y awscli
+
+echo "Uploading to S3"
+aws s3 cp "/tmp/$tar_name" "s3://$s3_bucket/$tar_name"
