@@ -1,6 +1,7 @@
 #!/bin/bash
 set -e
 
+name="Vivek"
 #S3 bucket name
 s3_bucket='upgrad-vivekbharos'
 
@@ -40,7 +41,7 @@ fi
 
 # compressing log files
 timestamp=$(date '+%d%m%Y-%H%M%S')
-tar_name="Vivek-httpd-logs-$timestamp.tar.gz"
+tar_name="$name-httpd-logs-$timestamp.tar.gz"
 
 echo "Creating log backup"
 sudo tar -czvf "/tmp/$tar_name" /var/log/apache2/*.log
